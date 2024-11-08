@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Mod(FarmMod.MOD_ID)
@@ -28,19 +29,19 @@ public class FarmMod {
     public static final String MOD_ID = "farmmod";
 
     private static final Logger LOGGER = LogUtils.getLogger();
-    public static Map<String, String> evolutions = new HashMap<>();
+    public static Map<String, List<String>> evolutions = new HashMap<>();
 
     public FarmMod(FMLJavaModLoadingContext context) {
         String[] irons = {"Iron Ore", "Block of Raw Iron", "Block of Iron"};
-        evolutions.put("Iron", Arrays.toString(irons));
+        evolutions.put("Iron", Arrays.asList(irons));
         String[] golds = {"Gold Ore", "Block of Raw Gold", "Block of Gold"};
-        evolutions.put("Gold", Arrays.toString(golds));
+        evolutions.put("Gold", Arrays.asList(golds));
         String[] coppers = {"Copper Ore", "Block of Raw Copper", "Block of Copper"};
-        evolutions.put("Copper", Arrays.toString(coppers));
+        evolutions.put("Copper", Arrays.asList(coppers));
         String[] stones = {"Cobblestone", "Stone", "Smooth Stone"};
-        evolutions.put("Stone", Arrays.toString(stones));
+        evolutions.put("Stone", Arrays.asList(stones));
         String[] woods = {"Oak Log", "Stripped Oak Log", "Oak Planks"};
-        evolutions.put("Wood", Arrays.toString(woods));
+        evolutions.put("Wood", Arrays.asList(woods));
 
         IEventBus modEventBus = context.getModEventBus();
 

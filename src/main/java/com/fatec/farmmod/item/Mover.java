@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 //Mostrar qual item está carregando
+//Verificar se tem algum bloco acima
 public class Mover extends Item {
 
     public Mover(Properties pProperties){
