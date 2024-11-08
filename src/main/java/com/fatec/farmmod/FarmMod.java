@@ -40,7 +40,7 @@ public class FarmMod {
         evolutions.put("Copper", Arrays.asList(coppers));
         String[] stones = {"Cobblestone", "Stone", "Smooth Stone"};
         evolutions.put("Stone", Arrays.asList(stones));
-        String[] woods = {"Oak Log", "Stripped Oak Log", "Oak Planks"};
+        String[] woods = {"Cherry Log", "Stripped Cherry Log", "Cherry Planks"};
         evolutions.put("Wood", Arrays.asList(woods));
 
         IEventBus modEventBus = context.getModEventBus();

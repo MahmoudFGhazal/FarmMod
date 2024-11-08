@@ -17,7 +17,7 @@ import java.util.*;
 
 import static com.fatec.farmmod.FarmMod.evolutions;
 
-//Arrumar Merge
+//Ter chance de merge no normal
 //Analisar Bloco acima e abaixo para não substituir
 public class Fusion extends Item {
     List<BlockPos> matchingBlocks = new ArrayList<>();
@@ -44,10 +44,11 @@ public class Fusion extends Item {
             if (evolutionList != null && player != null) {
                 int currentIndex = evolutionList.indexOf(blockName);
 
+                matchingBlocks.add(position);
                 visitedPositions.add(position);
                 checkNeighbors(block, position, pContext.getLevel());
 
-                if(matchingBlocks.size() >= 2) {
+                if(matchingBlocks.size() >= 3 && currentIndex >= 0 && currentIndex < 2) {
                     for (BlockPos posToDelete : matchingBlocks) {
                         pContext.getLevel().setBlock(posToDelete, Blocks.AIR.defaultBlockState(), 2);
                         pContext.getLevel().setBlock(posToDelete.below(), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
@@ -55,24 +56,27 @@ public class Fusion extends Item {
 
                     String nextBlockName = evolutionList.get(currentIndex + 1);
                     Block nextBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(nextBlockName.toLowerCase().replace(" ", "_")));
+                    int quantBlocks = matchingBlocks.size();
 
                     if (nextBlock != null) {
-                        if ((matchingBlocks.size()+1) % 5 == 0) {
-                            int merge = (matchingBlocks.size()+1) / 5;
-
-                            pContext.getLevel().setBlock(position, nextBlock.defaultBlockState(), 2);
-                            pContext.getLevel().setBlock(position.below(), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
-
-                            for(int i = 0; i < merge; i++){
-                                BlockPos extraBlockPos = matchingBlocks.get(i);
-
-                                pContext.getLevel().setBlock(extraBlockPos, nextBlock.defaultBlockState(), 2);
-                                pContext.getLevel().setBlock(extraBlockPos.below(), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
+                        if (quantBlocks % 5 == 0) {
+                            for(int i = 0; i <= Math.floorDiv(quantBlocks, 5); i+=2){
+                                pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
+                                pContext.getLevel().setBlock(matchingBlocks.get(i).below(), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
+                                pContext.getLevel().setBlock(matchingBlocks.get(i+1), nextBlock.defaultBlockState(), 2);
+                                pContext.getLevel().setBlock(matchingBlocks.get(i+1).below(), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
                             }
-                        } else if (currentIndex >= 0 && currentIndex < evolutionList.size() - 1) {
-                            pContext.getLevel().setBlock(position, nextBlock.defaultBlockState(), 2);
-                            pContext.getLevel().setBlock(position.below(), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
+                        }else {
+                            int i;
+                            for(i = 0; i < Math.floorDiv(quantBlocks, 3); i++){
+                                pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
+                                pContext.getLevel().setBlock(matchingBlocks.get(i).below(), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
+                            }
 
+                            for(int p = i; p < quantBlocks % 3 + i; p++){
+                                pContext.getLevel().setBlock(matchingBlocks.get(p), block.defaultBlockState(), 2);
+                                pContext.getLevel().setBlock(matchingBlocks.get(p).below(), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
+                            }
                         }
                     }
                 }
