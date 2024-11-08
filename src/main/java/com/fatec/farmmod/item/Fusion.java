@@ -1,8 +1,6 @@
 package com.fatec.farmmod.item;
 
-import com.fatec.farmmod.FarmMod;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
