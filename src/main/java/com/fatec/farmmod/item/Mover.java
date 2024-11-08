@@ -13,8 +13,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
 import java.util.Objects;
 
+//Mostrar qual item está carregando
 public class Mover extends Item {
 
     public Mover(Properties pProperties){
@@ -31,31 +33,28 @@ public class Mover extends Item {
             Player player = pContext.getPlayer();
             BlockState blockState = pContext.getLevel().getBlockState(position);
             Block block = blockState.getBlock();
+            String blockName = block.getName().getString();
 
-            if(!hasBlock) {
-                if (player != null) {
-                    for (Block blockex : ForgeRegistries.BLOCKS.getValues()) {
-                        if (FarmMod.MOD_ID.equals(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(blockex)).getNamespace())) {
-                            if (block == blockex) {
-                                player.displayClientMessage(Component.literal("Você clicou no " + block.getName().getString()), true);
-                                atualblock = blockex;
-                                break;
-                            }
-                        }
-                    }
-                }
+            String evolutionCategory = FarmMod.evolutions.entrySet().stream()
+                    .filter(entry -> entry.getValue().contains(blockName))
+                    .map(Map.Entry::getKey)
+                    .findFirst().orElse(null);
 
+
+            if(evolutionCategory != null && !hasBlock) {
+                if (player != null)
+                    player.displayClientMessage(Component.literal("Você clicou no " + block.getName().getString()), true);
+                atualblock = block;
                 pContext.getLevel().setBlock(position, Blocks.AIR.defaultBlockState(), 2);
                 hasBlock = true;
-            } else {
-                if (block != Blocks.AIR) {
-                    BlockPos positionAbove = position.above();
-                    BlockState newState = atualblock.defaultBlockState();
-                    pContext.getLevel().setBlock(positionAbove, newState, 3);
+            }else if(hasBlock) {
+                BlockPos positionAbove = position.above();
+                BlockState newState = atualblock.defaultBlockState();
+                pContext.getLevel().setBlock(positionAbove, newState, 3);
+                hasBlock = false;
 
-                    hasBlock = false;
-                }
             }
+
         }
         return InteractionResult.SUCCESS;
     }

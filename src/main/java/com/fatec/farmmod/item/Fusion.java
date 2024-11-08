@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import static com.fatec.farmmod.FarmMod.evolutions;
+
 public class Fusion extends Item {
     List<BlockPos> matchingBlocks = new ArrayList<>();
     Set<BlockPos> visitedPositions = new HashSet<>();
@@ -31,26 +33,19 @@ public class Fusion extends Item {
             Player player = pContext.getPlayer();
             BlockState blockState = pContext.getLevel().getBlockState(position);
             Block block = blockState.getBlock();
+            String blockName = block.getName().getString();
 
-            Block atualblock = null;
+            String evolutionCategory = evolutions.entrySet().stream()
+                    .filter(entry -> entry.getValue().contains(blockName))
+                    .map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse(null);
 
-            if (player != null) {
-                for (Block blockex : ForgeRegistries.BLOCKS.getValues()) {
-                    if (FarmMod.MOD_ID.equals(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(blockex)).getNamespace())) {
-                        if (block == blockex) {
-                            player.displayClientMessage(Component.literal("Você clicou no " + block.getName().getString()), true);
-                            atualblock = blockex;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (atualblock != null) {
+            if (evolutionCategory != null && player != null) {
                 visitedPositions.add(position);
-                checkNeighbors(atualblock, position, pContext.getLevel());
+                checkNeighbors(block, position, pContext.getLevel());
                 System.out.println(matchingBlocks.size());
-                for (BlockPos posToDelete : matchingBlocks) {
+                for(BlockPos posToDelete : matchingBlocks) {
                     pContext.getLevel().setBlock(posToDelete, Blocks.AIR.defaultBlockState(), 2);
                     pContext.getLevel().setBlock(posToDelete.below(), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
                 }

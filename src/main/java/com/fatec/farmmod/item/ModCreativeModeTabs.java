@@ -19,6 +19,7 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetab.farmtab"))
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.FUSION.get());
+                        pOutput.accept(ModItems.MOVER.get());
                         pOutput.accept(ModBlock.ARROZ.get()); // Verifique se ARROZ está registrado corretamente
                     })
                     .build());
