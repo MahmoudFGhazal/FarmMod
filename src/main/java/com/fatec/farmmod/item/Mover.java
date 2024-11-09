@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Objects;
 
 //Mostrar qual item está carregando
-//Verificar se tem algum bloco acima
 public class Mover extends Item {
 
     public Mover(Properties pProperties){
@@ -49,11 +48,19 @@ public class Mover extends Item {
                 pContext.getLevel().setBlock(position, Blocks.AIR.defaultBlockState(), 2);
                 hasBlock = true;
             }else if(hasBlock) {
-                BlockPos positionAbove = position.above();
-                BlockState newState = atualblock.defaultBlockState();
-                pContext.getLevel().setBlock(positionAbove, newState, 3);
-                hasBlock = false;
-
+                Block aboveBlock = pContext.getLevel().getBlockState(position.above()).getBlock();
+                if(aboveBlock == Blocks.AIR) {
+                    BlockPos positionAbove = position.above();
+                    BlockState newState = atualblock.defaultBlockState();
+                    pContext.getLevel().setBlock(positionAbove, newState, 3);
+                    hasBlock = false;
+                }else{
+                    if(player != null)
+                       player.displayClientMessage(Component.literal("Não é possivel substituir blocos"), true);
+                }
+            }else{
+                if(player != null)
+                    player.displayClientMessage(Component.literal("Não é possivel pegar esse bloco"), true);
             }
 
         }
