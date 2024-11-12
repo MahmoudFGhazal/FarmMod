@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 import static com.fatec.farmmod.FarmMod.evolutions;
+import static com.fatec.farmmod.FarmMod.rand;
 
 //Ter chance de merge no normal
 public class Fusion extends Item {
@@ -57,18 +58,28 @@ public class Fusion extends Item {
                     }
 
                     String nextBlockName = evolutionList.get(currentIndex + 1);
-                    Block nextBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(nextBlockName.toLowerCase().replace(" ", "_")));
-                    int quantBlocks = matchingBlocks.size();
+                    Optional<Block> blockOptional = ForgeRegistries.BLOCKS.getValues()
+                            .stream()
+                            .filter(nextblock -> nextblock.getName().getString().equals(nextBlockName))
+                            .findFirst();
 
+                    Block nextBlock = null;
+                    if (blockOptional.isPresent()) nextBlock = ForgeRegistries.BLOCKS.getValue(ForgeRegistries.BLOCKS.getKey(blockOptional.get()));
+
+                    int quantBlocks = matchingBlocks.size();
                     if (nextBlock != null) {
                         if (quantBlocks % 5 == 0) {
                             for(int i = 0; i <= Math.floorDiv(quantBlocks, 5); i+=2){
+
                                 pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
-                                pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
+                                pContext.getLevel().setBlock(matchingBlocks.get(i+1), nextBlock.defaultBlockState(), 2);
                             }
                         }else {
                             int i;
+                            int div = Math.floorDiv(quantBlocks, 3);
                             for(i = 0; i < Math.floorDiv(quantBlocks, 3); i++){
+
+
                                 pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
                             }
 
