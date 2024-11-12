@@ -66,6 +66,7 @@ public class FarmMod {
         ResourceKey<CreativeModeTab> farmTabKey = ModCreativeModeTabs.FARM_TAB.getKey();
         if (event.getTabKey().equals(farmTabKey)) {
             event.accept(ModItems.FUSION); // Adiciona o item Fusion à aba de ingredientes
+            event.accept(ModItems.BOXSTOCK);
         }
     }
 

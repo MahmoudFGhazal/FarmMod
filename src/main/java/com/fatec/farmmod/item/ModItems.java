@@ -16,6 +16,8 @@ public class ModItems {
 
     public static final RegistryObject<Item> MOVER = ITEMS.register("mover", () -> new Mover(new Properties()));
 
+    public static final RegistryObject<Item> BOXSTOCK = ITEMS.register("boxstock", () -> new BoxStock(new Properties()));
+
     public static void register(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
     }
