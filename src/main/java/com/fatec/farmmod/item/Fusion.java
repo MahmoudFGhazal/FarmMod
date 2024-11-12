@@ -1,7 +1,6 @@
 package com.fatec.farmmod.item;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -16,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 import static com.fatec.farmmod.FarmMod.evolutions;
-import static com.fatec.farmmod.FarmMod.rand;
 
 //Ter chance de merge no normal
 public class Fusion extends Item {
@@ -76,10 +74,7 @@ public class Fusion extends Item {
                             }
                         }else {
                             int i;
-                            int div = Math.floorDiv(quantBlocks, 3);
                             for(i = 0; i < Math.floorDiv(quantBlocks, 3); i++){
-
-
                                 pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
                             }
 
