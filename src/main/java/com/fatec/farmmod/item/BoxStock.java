@@ -33,7 +33,7 @@ public class BoxStock extends Item {
             Blocks.GOLD_ORE,
             Blocks.IRON_ORE,
             Blocks.COBBLESTONE,
-            Blocks.CHERRY_WOOD
+            Blocks.CHERRY_LOG
     };
 
     public BoxStock(@NotNull Properties properties) {
@@ -43,7 +43,6 @@ public class BoxStock extends Item {
     public void inventoryTick(ItemStack stack, @NotNull Level world, Entity entity, int slot, boolean isSelected) {
         if (!world.isClientSide && entity instanceof ServerPlayer) {
             tickCount++;
-            stack.setCount(0);
             if(tickCount >= INTERVAL_STACK){
                 tickCount = 0;
                 if(stack.getCount() < MAX_STACK){
