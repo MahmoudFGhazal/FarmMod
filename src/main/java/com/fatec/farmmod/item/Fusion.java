@@ -22,7 +22,7 @@ public class Fusion extends Item {
     Set<BlockPos> visitedPositions = new HashSet<>();
 
     public Fusion(Properties pProperties) {
-        super(pProperties);
+        super(pProperties.stacksTo(1));
     }
 
     @Override
@@ -47,13 +47,7 @@ public class Fusion extends Item {
                 checkNeighbors(block, position, pContext.getLevel());
 
                 if(matchingBlocks.size() >= 3 && currentIndex >= 0 && currentIndex < 2) {
-                    for (BlockPos posToDelete : matchingBlocks) {
-                        pContext.getLevel().setBlock(posToDelete, Blocks.AIR.defaultBlockState(), 2);
-
-                        Block belowBlock = pContext.getLevel().getBlockState(posToDelete.below()).getBlock();
-                        if(belowBlock == Blocks.DIRT)
-                            pContext.getLevel().setBlock(posToDelete.below(), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
-                    }
+                    deleteBlocks(pContext);
 
                     String nextBlockName = evolutionList.get(currentIndex + 1);
                     Optional<Block> blockOptional = ForgeRegistries.BLOCKS.getValues()
@@ -110,6 +104,16 @@ public class Fusion extends Item {
                     checkNeighbors(startblock, currentPos, level);
                 }
             }
+        }
+    }
+
+    private void deleteBlocks(UseOnContext pContext){
+        for (BlockPos posToDelete : matchingBlocks) {
+            pContext.getLevel().setBlock(posToDelete, Blocks.AIR.defaultBlockState(), 2);
+
+            Block belowBlock = pContext.getLevel().getBlockState(posToDelete.below()).getBlock();
+            if(belowBlock == Blocks.DIRT)
+                pContext.getLevel().setBlock(posToDelete.below(), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
         }
     }
 

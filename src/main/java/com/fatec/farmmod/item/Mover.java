@@ -18,7 +18,7 @@ import java.util.Map;
 public class Mover extends Item {
 
     public Mover(Properties pProperties){
-        super(pProperties);
+        super(pProperties.stacksTo(1));
     }
 
     private boolean hasBlock = false;
