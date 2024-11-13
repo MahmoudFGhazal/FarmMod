@@ -1,24 +1,17 @@
 package com.fatec.farmmod.item;
 
-import com.fatec.farmmod.FarmMod;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -61,7 +54,6 @@ public class BoxStock extends Item {
                 int currentCount = getCount(stack);
                 if(currentCount < MAX_STACK){
                     setCount(stack, currentCount +1); //aumenta em 1 o stack
-                    System.out.println("Stack count: " + (currentCount + 1));
                 }
             }
         }
@@ -87,10 +79,10 @@ public class BoxStock extends Item {
         }
         return InteractionResult.PASS;
     }
-
     @Override
-    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, net.minecraft.world.item.TooltipFlag flag){
-        int count = getCount(stack);
-        tooltip.add(Component.translatable("item.farmmod.box_stock.stacks", count));
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
+        int count = getCount(stack); // obtém o valor atual de 'count' do ItemStack
+        tooltip.add(Component.translatable("item.farmmod.boxstock.stacks", count));
     }
+
 }

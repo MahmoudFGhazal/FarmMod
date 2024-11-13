@@ -82,4 +82,24 @@ public class FarmMod {
             // Configurações específicas do cliente
         }
     }
+
+    /*
+    //muda o jogador pro modo aventura independentemente do modo que escolher
+    @SubscribeEvent
+    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+        if(player instanceof ServerPlayer) {
+            ((ServerPlayer) player).setGameMode(GameType.ADVENTURE);
+        }
+    }
+
+    //não deixa o jogador mudar de modo de jogo(fica no aventura)
+    @SubscribeEvent
+    public static void onPLayerChangeGameMode(PlayerEvent.PlayerChangeGameModeEvent event) {
+        if(event.getNewGameMode() != GameType.ADVENTURE){
+            event.setCanceled(true);
+            event.getEntity().sendSystemMessage(Component.literal("você não pode mudar o modo de jogo!"));
+        }
+    }
+    */
 }
