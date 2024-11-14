@@ -60,7 +60,6 @@ public class Mover extends Item {
                 if(player != null)
                     player.displayClientMessage(Component.literal("Não é possivel pegar esse bloco"), true);
             }
-
         }
         return InteractionResult.SUCCESS;
     }

@@ -15,11 +15,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 import static com.fatec.farmmod.FarmMod.evolutions;
+import static com.fatec.farmmod.FarmMod.rand;
 
 //Ter chance de merge no normal
 public class Fusion extends Item {
     List<BlockPos> matchingBlocks = new ArrayList<>();
     Set<BlockPos> visitedPositions = new HashSet<>();
+
 
     public Fusion(Properties pProperties) {
         super(pProperties.stacksTo(1));
@@ -61,15 +63,20 @@ public class Fusion extends Item {
                     int quantBlocks = matchingBlocks.size();
                     if (nextBlock != null) {
                         if (quantBlocks % 5 == 0) {
-                            for(int i = 0; i <= Math.floorDiv(quantBlocks, 5); i+=2){
+                            for(int i = 0; i <= Math.floorDiv(quantBlocks, 5); i++){
 
+                                pContext.getLevel().setBlock(matchingBlocks.get(i++), nextBlock.defaultBlockState(), 2);
                                 pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
-                                pContext.getLevel().setBlock(matchingBlocks.get(i+1), nextBlock.defaultBlockState(), 2);
                             }
                         }else {
                             int i;
                             for(i = 0; i < Math.floorDiv(quantBlocks, 3); i++){
-                                pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
+                                if(rand.nextInt(100) > 5) {
+                                    pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
+                                }else{
+                                    pContext.getLevel().setBlock(matchingBlocks.get(i++), nextBlock.defaultBlockState(), 2);
+                                    pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
+                                }
                             }
 
                             for(int p = i; p < quantBlocks % 3 + i; p++){

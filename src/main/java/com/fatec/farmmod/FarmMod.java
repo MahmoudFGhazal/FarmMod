@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 
 import java.util.*;
 
+
 @Mod(FarmMod.MOD_ID)
 public class FarmMod {
     public static final String MOD_ID = "farmmod";
@@ -28,7 +29,7 @@ public class FarmMod {
     private static final Logger LOGGER = LogUtils.getLogger();
     public static Map<String, List<String>> evolutions = new HashMap<>();
 
-    public static Random rand;
+    public static Random rand = new Random();
 
     public FarmMod(FMLJavaModLoadingContext context) {
         String[] irons = {"Iron Ore", "Block of Raw Iron", "Block of Iron"};
