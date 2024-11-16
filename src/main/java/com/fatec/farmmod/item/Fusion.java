@@ -17,7 +17,6 @@ public class Fusion extends Item {
     List<BlockPos> matchingBlocks = new ArrayList<>();
     Set<BlockPos> visitedPositions = new HashSet<>();
 
-
     public Fusion(Properties pProperties) {
         super(pProperties.stacksTo(1));
     }
@@ -51,7 +50,7 @@ public class Fusion extends Item {
                     }else {
                         int i;
                         for(i = 0; i < Math.floorDiv(quantBlocks, 3); i++){
-                            if(ItemUtils.chance(5)) {
+                            if(ItemUtils.random(100) > 5) {
                                 pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
                             }else{
                                 pContext.getLevel().setBlock(matchingBlocks.get(i++), nextBlock.defaultBlockState(), 2);

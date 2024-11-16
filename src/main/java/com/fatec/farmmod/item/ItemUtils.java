@@ -45,13 +45,21 @@ public class ItemUtils {
         return null;
     }
 
+    public static Block getRandomBlock(int index){
+        Object[] keys = evolutions.keySet().toArray();
+        String randomKey = (String) keys[random(keys.length)];
+
+        List<String> randomList = evolutions.get(randomKey);
+        return getBlockByName(randomList.get(index));
+    }
+
     public static boolean checkList(String blockName){
         return evolutions.values().stream()
                 .anyMatch(list -> list.contains(blockName));
     }
 
-    public static boolean chance(int percent){
-        return rand.nextInt(100) > percent;
+    public static int random(int number){
+        return rand.nextInt(number);
     }
 
 }

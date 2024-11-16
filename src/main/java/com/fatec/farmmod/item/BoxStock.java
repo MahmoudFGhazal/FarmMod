@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -23,18 +22,13 @@ public class BoxStock extends Item {
     private int tickCount = 0;
     private static final String COUNT_TAG = "box_stock_count";
 
-    private static final Block[] BLOCKS = {
-            Blocks.COPPER_ORE,
-            Blocks.GOLD_ORE,
-            Blocks.IRON_ORE,
-            Blocks.COBBLESTONE,
-            Blocks.CHERRY_WOOD
-    };
+
 
     public BoxStock(@NotNull Properties properties) {
         super(properties.stacksTo(1)); //pelo oq eu entendi isso permite so 1 item desses no slot, evita bug
     }
-//obtem o valor de count do item stack
+
+    //obtem o valor de count do item stack
     private int getCount (ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTag();
         return tag.getInt(COUNT_TAG);
@@ -68,8 +62,7 @@ public class BoxStock extends Item {
         if(!world.isClientSide) {
             int currentCount = getCount(stack);
             if (currentCount > 0) { //verifica se o item tem stacks para usar
-                Random random = new Random();
-                Block block = BLOCKS[random.nextInt(BLOCKS.length)];
+                Block block = ItemUtils.getRandomBlock(0);
                 world.setBlock(pos, block.defaultBlockState(), 3);
                 setCount(stack, currentCount - 1);
                 return InteractionResult.SUCCESS;
@@ -79,8 +72,9 @@ public class BoxStock extends Item {
         }
         return InteractionResult.PASS;
     }
+
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, Level world, List<Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, Level world, List<Component> tooltip, net.minecraft.world.item.@NotNull TooltipFlag flag) {
         int count = getCount(stack); // obtém o valor atual de 'count' do ItemStack
         tooltip.add(Component.translatable("item.farmmod.boxstock.stacks", count));
     }
