@@ -60,7 +60,7 @@ public class BoxStock extends Item {
     }
 
     @Override
-    public InteractionResult useOn(@NotNull UseOnContext context){
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext context){
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
         ItemStack stack = context.getItemInHand();
@@ -80,7 +80,7 @@ public class BoxStock extends Item {
         return InteractionResult.PASS;
     }
     @Override
-    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, Level world, List<Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
         int count = getCount(stack); // obtém o valor atual de 'count' do ItemStack
         tooltip.add(Component.translatable("item.farmmod.boxstock.stacks", count));
     }

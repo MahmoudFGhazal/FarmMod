@@ -9,15 +9,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import static com.fatec.farmmod.FarmMod.evolutions;
-import static com.fatec.farmmod.FarmMod.rand;
-
-//Ter chance de merge no normal
 public class Fusion extends Item {
     List<BlockPos> matchingBlocks = new ArrayList<>();
     Set<BlockPos> visitedPositions = new HashSet<>();
@@ -36,56 +31,41 @@ public class Fusion extends Item {
             Block block = blockState.getBlock();
             String blockName = block.getName().getString();
 
-            List<String> evolutionList = evolutions.values().stream()
-                    .filter(strings -> strings.contains(blockName))
-                    .findFirst()
-                    .orElse(null);
-
-            if (evolutionList != null && player != null) {
-                int currentIndex = evolutionList.indexOf(blockName);
-
+            if (ItemUtils.checkList(blockName) && player != null) {
                 matchingBlocks.add(position);
                 visitedPositions.add(position);
                 checkNeighbors(block, position, pContext.getLevel());
 
-                if(matchingBlocks.size() >= 3 && currentIndex >= 0 && currentIndex < 2) {
+                Block nextBlock = ItemUtils.getNextEvolutions(blockName);
+
+                if(matchingBlocks.size() >= 3 && nextBlock != null) {
                     deleteBlocks(pContext);
 
-                    String nextBlockName = evolutionList.get(currentIndex + 1);
-                    Optional<Block> blockOptional = ForgeRegistries.BLOCKS.getValues()
-                            .stream()
-                            .filter(nextblock -> nextblock.getName().getString().equals(nextBlockName))
-                            .findFirst();
-
-                    Block nextBlock = null;
-                    if (blockOptional.isPresent()) nextBlock = ForgeRegistries.BLOCKS.getValue(ForgeRegistries.BLOCKS.getKey(blockOptional.get()));
-
                     int quantBlocks = matchingBlocks.size();
-                    if (nextBlock != null) {
-                        if (quantBlocks % 5 == 0) {
-                            for(int i = 0; i <= Math.floorDiv(quantBlocks, 5); i++){
 
+                    if (quantBlocks % 5 == 0) {
+                        for(int i = 0; i <= Math.floorDiv(quantBlocks, 5); i++){
+                            pContext.getLevel().setBlock(matchingBlocks.get(i++), nextBlock.defaultBlockState(), 2);
+                            pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
+                        }
+                    }else {
+                        int i;
+                        for(i = 0; i < Math.floorDiv(quantBlocks, 3); i++){
+                            if(ItemUtils.chance(5)) {
+                                pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
+                            }else{
                                 pContext.getLevel().setBlock(matchingBlocks.get(i++), nextBlock.defaultBlockState(), 2);
                                 pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
                             }
-                        }else {
-                            int i;
-                            for(i = 0; i < Math.floorDiv(quantBlocks, 3); i++){
-                                if(rand.nextInt(100) > 5) {
-                                    pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
-                                }else{
-                                    pContext.getLevel().setBlock(matchingBlocks.get(i++), nextBlock.defaultBlockState(), 2);
-                                    pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
-                                }
-                            }
+                        }
 
-                            for(int p = i; p < quantBlocks % 3 + i; p++){
-                                pContext.getLevel().setBlock(matchingBlocks.get(p), block.defaultBlockState(), 2);
-                            }
+                        for(int p = i; p < quantBlocks % 3 + i; p++){
+                            pContext.getLevel().setBlock(matchingBlocks.get(p), block.defaultBlockState(), 2);
                         }
                     }
                 }
             }
+
             matchingBlocks.clear();
             visitedPositions.clear();
         }

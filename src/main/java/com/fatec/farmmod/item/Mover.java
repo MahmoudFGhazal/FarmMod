@@ -1,6 +1,5 @@
 package com.fatec.farmmod.item;
 
-import com.fatec.farmmod.FarmMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -33,13 +32,7 @@ public class Mover extends Item {
             Block block = blockState.getBlock();
             String blockName = block.getName().getString();
 
-            String evolutionCategory = FarmMod.evolutions.entrySet().stream()
-                    .filter(entry -> entry.getValue().contains(blockName))
-                    .map(Map.Entry::getKey)
-                    .findFirst().orElse(null);
-
-
-            if(evolutionCategory != null && !hasBlock) {
+            if(ItemUtils.checkList(blockName) && !hasBlock) {
                 if (player != null)
                     player.displayClientMessage(Component.literal("Você clicou no " + block.getName().getString()), true);
                 atualblock = block;
