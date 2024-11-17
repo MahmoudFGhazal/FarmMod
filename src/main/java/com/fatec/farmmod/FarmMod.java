@@ -6,10 +6,15 @@ import com.fatec.farmmod.block.ModBlock;
 import com.fatec.farmmod.event.ModEvents;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab; // Importação necessária
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -71,7 +76,7 @@ public class FarmMod {
         }
     }
 
-    /*
+
     //muda o jogador pro modo aventura independentemente do modo que escolher
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
@@ -79,8 +84,14 @@ public class FarmMod {
         if(player instanceof ServerPlayer) {
             ((ServerPlayer) player).setGameMode(GameType.ADVENTURE);
         }
+        if (!player.getInventory().contains(new ItemStack(ModItems.FUSION.get()))) { // ver se o player já tem o item(evita bug)
+            player.getInventory().add(new ItemStack(ModItems.FUSION.get()));
+            player.getInventory().add(new ItemStack(ModItems.MOVER.get()));
+            player.getInventory().add(new ItemStack(ModItems.BOXSTOCK.get()));
+        }
     }
 
+    /*
     //não deixa o jogador mudar de modo de jogo(fica no aventura)
     @SubscribeEvent
     public static void onPLayerChangeGameMode(PlayerEvent.PlayerChangeGameModeEvent event) {
