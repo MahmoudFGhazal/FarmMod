@@ -38,14 +38,14 @@ public class Mover extends Item {
                 hasBlock = true;
             }else if(hasBlock) {
                 Block aboveBlock = pContext.getLevel().getBlockState(position.above()).getBlock();
-                if(aboveBlock == Blocks.AIR) {
+                if(aboveBlock == Blocks.AIR && position.above().getY() == -62) {
                     BlockPos positionAbove = position.above();
                     BlockState newState = atualblock.defaultBlockState();
                     pContext.getLevel().setBlock(positionAbove, newState, 3);
                     hasBlock = false;
                 }else{
                     if(player != null)
-                       player.displayClientMessage(Component.literal("Não é possivel substituir blocos"), true);
+                       player.displayClientMessage(Component.literal("Não é possivel colocar bloco nesse lugar"), true);
                 }
             }else{
                 if(player != null)

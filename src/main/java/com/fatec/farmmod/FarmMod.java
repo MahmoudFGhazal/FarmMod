@@ -80,7 +80,7 @@ public class FarmMod {
         if(player instanceof ServerPlayer) {
             ((ServerPlayer) player).setGameMode(GameType.ADVENTURE);
         }
-        if (!player.getInventory().contains(new ItemStack(ModItems.FUSION.get()))) { // ver se o player já tem o item(evita bug)
+        if (!player.getInventory().contains(new ItemStack(ModItems.FUSION.get()))) {
             player.getInventory().add(new ItemStack(ModItems.FUSION.get()));
             player.getInventory().add(new ItemStack(ModItems.MOVER.get()));
             player.getInventory().add(new ItemStack(ModItems.BOXSTOCK.get()));
