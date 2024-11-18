@@ -14,7 +14,7 @@ public class ItemUtils {
             "Gold", List.of("Gold Ore", "Block of Raw Gold", "Block of Gold"),
             "Copper", List.of("Copper Ore", "Block of Raw Copper", "Block of Copper"),
             "Stone", List.of("Cobblestone", "Stone", "Smooth Stone"),
-            "Wood", List.of("Cherry Log", "Stripped Cherry Log", "Cherry Planks")
+            "Wood", List.of("Cherry Wood", "Stripped Cherry Log", "Cherry Planks")
     );
 
     public static List<String> getEvolutionsList(String blockName){
