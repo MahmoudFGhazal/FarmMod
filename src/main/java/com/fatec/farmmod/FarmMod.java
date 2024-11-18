@@ -2,7 +2,6 @@ package com.fatec.farmmod;
 
 import com.fatec.farmmod.item.ModCreativeModeTabs;
 import com.fatec.farmmod.item.ModItems;
-import com.fatec.farmmod.block.ModBlock;
 import com.fatec.farmmod.event.ModEvents;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceKey;
@@ -24,8 +23,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-import java.util.*;
-
 
 @Mod(FarmMod.MOD_ID)
 public class FarmMod {
@@ -39,7 +36,6 @@ public class FarmMod {
 
         ModCreativeModeTabs.register(modEventBus); // Registro das abas criativas
         ModItems.register(modEventBus); // Registro dos itens
-        ModBlock.register(modEventBus); // Registro dos blocos
 
         modEventBus.addListener(this::commonSetup); // Configuração comum
         MinecraftForge.EVENT_BUS.register(this); // Registro de eventos

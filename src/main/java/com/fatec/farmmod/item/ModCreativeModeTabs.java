@@ -1,7 +1,6 @@
 package com.fatec.farmmod.item;
 
 import com.fatec.farmmod.FarmMod;
-import com.fatec.farmmod.block.ModBlock; // Verifique se esta importação está correta
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -19,9 +18,7 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetab.farmtab"))
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.FUSION.get());
-                        pOutput.accept(ModItems.MOVER.get());
-                        pOutput.accept(ModBlock.ARROZ.get()); // Verifique se ARROZ está registrado corretamente
-                    })
+                        pOutput.accept(ModItems.MOVER.get());})
                     .build());
 
     public static void register(IEventBus eventBus) {
