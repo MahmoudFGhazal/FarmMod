@@ -1,9 +1,12 @@
 package com.fatec.farmmod.item;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -30,38 +33,61 @@ public class Fusion extends Item {
             Block block = blockState.getBlock();
             String blockName = block.getName().getString();
 
-            if (ItemUtils.checkList(blockName) && player != null) {
+            if(ItemUtils.checkList(blockName) && player != null) {
                 matchingBlocks.add(position);
                 visitedPositions.add(position);
                 checkNeighbors(block, position, pContext.getLevel());
 
-                Block nextBlock = ItemUtils.getNextEvolutions(blockName);
+                String nextBlockName = ItemUtils.getNextEvolutions(blockName);
 
-                if(matchingBlocks.size() >= 3 && nextBlock != null) {
+                if(matchingBlocks.size() >= 3 && nextBlockName != null) {
                     deleteBlocks(pContext);
 
                     int quantBlocks = matchingBlocks.size();
+                    if (nextBlockName.startsWith("Items: ")) {
+                        nextBlockName = nextBlockName.substring("Items: ".length());
+                        Item dropItem = ItemUtils.getItemByName(nextBlockName);
+                        Level world = pContext.getLevel();
+                        if(dropItem != null) {
+                            ItemStack emeraldDrop = new ItemStack(dropItem, matchingBlocks.size());
 
-                    if (quantBlocks % 5 == 0) {
-                        for(int i = 0; i <= Math.floorDiv(quantBlocks, 5); i++){
-                            pContext.getLevel().setBlock(matchingBlocks.get(i++), nextBlock.defaultBlockState(), 2);
-                            pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
+                            world.addFreshEntity(new ItemEntity(
+                                    world,
+                                    position.getX() + 0.5,
+                                    position.getY() + 0.5,
+                                    position.getZ() + 0.5,
+                                    emeraldDrop
+                            ));
                         }
-                    }else {
-                        int i;
-                        for(i = 0; i < Math.floorDiv(quantBlocks, 3); i++){
-                            if(ItemUtils.random(100) > 5) {
-                                pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
-                            }else{
+                    } else {
+                        Block nextBlock = ItemUtils.getBlockByName(nextBlockName);
+                        if (quantBlocks % 5 == 0) {
+                            for (int i = 0; i <= Math.floorDiv(quantBlocks, 5); i++) {
                                 pContext.getLevel().setBlock(matchingBlocks.get(i++), nextBlock.defaultBlockState(), 2);
                                 pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
                             }
-                        }
+                            player.displayClientMessage(Component.literal("Lucky Merge"), true);
+                        } else {
 
-                        for(int p = i; p < quantBlocks % 3 + i; p++){
-                            pContext.getLevel().setBlock(matchingBlocks.get(p), block.defaultBlockState(), 2);
+                            int i;
+                            for (i = 0; i < Math.floorDiv(quantBlocks, 3); i++) {
+                                if (ItemUtils.random(100) > 5) {
+                                    pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
+                                } else {
+                                    pContext.getLevel().setBlock(matchingBlocks.get(i++), nextBlock.defaultBlockState(), 2);
+                                    pContext.getLevel().setBlock(matchingBlocks.get(i), nextBlock.defaultBlockState(), 2);
+                                    player.displayClientMessage(Component.literal("Lucky Merge"), true);
+                                }
+                            }
+
+                            for (int p = i; p < quantBlocks % 3 + i; p++) {
+                                pContext.getLevel().setBlock(matchingBlocks.get(p), block.defaultBlockState(), 2);
+                            }
                         }
                     }
+
+                }else{
+                    player.displayClientMessage(Component.literal("Quantidade de Blocos Insuficientes"), true);
                 }
             }
 

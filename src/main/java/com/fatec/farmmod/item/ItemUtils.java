@@ -1,6 +1,11 @@
 package com.fatec.farmmod.item;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
@@ -32,13 +37,28 @@ public class ItemUtils {
                 .orElse(null);
     }
 
-    public static Block getNextEvolutions(String blockName){
+    public static Item getItemByName(String itemName) {
+        for (Item item : ForgeRegistries.ITEMS) {
+            String translatedName = Component.translatable(item.getDescriptionId()).getString();
+            if (translatedName.equals(itemName)) {
+                Optional<ResourceLocation> opitem = Optional.ofNullable(ForgeRegistries.ITEMS.getKey(item));
+               if(opitem.isPresent()){
+                   return ForgeRegistries.ITEMS.getValue(opitem.get());
+               }
+            }
+        }
+        return null;
+    }
+
+    public static String getNextEvolutions(String blockName){
         List<String> evolutionList = getEvolutionsList(blockName);
 
         if(!evolutionList.isEmpty()){
             int currentIndex = evolutionList.indexOf(blockName);
-            if(currentIndex >= 0 && currentIndex < evolutionList.size() - 1){
-                return getBlockByName(evolutionList.get(currentIndex + 1));
+            if(currentIndex < evolutionList.size() - 1){
+                return evolutionList.get(currentIndex + 1);
+            }else{
+                return "Items: " + evolutionList.get(currentIndex);
             }
         }
 
@@ -61,5 +81,10 @@ public class ItemUtils {
     public static int random(int number){
         return rand.nextInt(number);
     }
+
+    public static boolean checkHeight(BlockPos position, Block aboveBlock){
+        return position.above().getY() == -62 && aboveBlock == Blocks.AIR;
+    }
+
 
 }

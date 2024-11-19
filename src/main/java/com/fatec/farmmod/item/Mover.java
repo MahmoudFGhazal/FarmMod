@@ -38,7 +38,7 @@ public class Mover extends Item {
                 hasBlock = true;
             }else if(hasBlock) {
                 Block aboveBlock = pContext.getLevel().getBlockState(position.above()).getBlock();
-                if(aboveBlock == Blocks.AIR && position.above().getY() == -62) {
+                if(ItemUtils.checkHeight(position, aboveBlock)) {
                     BlockPos positionAbove = position.above();
                     BlockState newState = atualblock.defaultBlockState();
                     pContext.getLevel().setBlock(positionAbove, newState, 3);

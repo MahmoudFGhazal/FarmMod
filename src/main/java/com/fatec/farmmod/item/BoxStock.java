@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -54,19 +55,28 @@ public class BoxStock extends Item {
     }
 
     @Override
-    public @NotNull InteractionResult useOn(@NotNull UseOnContext context){
-        Level world = context.getLevel();
-        BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
-        ItemStack stack = context.getItemInHand();
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext pContext){
+        Level world = pContext.getLevel();
+        BlockPos position = pContext.getClickedPos();
+        ItemStack stack = pContext.getItemInHand();
+        Player player = pContext.getPlayer();
 
         if(!world.isClientSide) {
             int currentCount = getCount(stack);
             if (currentCount > 0) { //verifica se o item tem stacks para usar
-                Block block = ItemUtils.getRandomBlock(0);
-                world.setBlock(pos, block.defaultBlockState(), 3);
-                setCount(stack, currentCount - 1);
-                return InteractionResult.SUCCESS;
+                Block aboveBlock = pContext.getLevel().getBlockState(position.above()).getBlock();
+                if(ItemUtils.checkHeight(position, aboveBlock)) {
+                    Block block = ItemUtils.getRandomBlock(0);
+                    world.setBlock(position, block.defaultBlockState(), 3);
+                    setCount(stack, currentCount - 1);
+                    return InteractionResult.SUCCESS;
+                }else{
+                    if (player != null)
+                        player.displayClientMessage(Component.literal("Não é possivel colocar bloco nesse lugar"), true);
+                }
             } else {
+                if (player != null)
+                    player.displayClientMessage(Component.literal("Sem usos disponivel"), true);
                 return InteractionResult.FAIL;
             }
         }
