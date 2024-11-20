@@ -74,6 +74,7 @@ public class BoxStock extends Item {
                     if (player != null)
                         player.displayClientMessage(Component.literal("Não é possivel colocar bloco nesse lugar"), true);
                 }
+
             } else {
                 if (player != null)
                     player.displayClientMessage(Component.literal("Sem usos disponivel"), true);
