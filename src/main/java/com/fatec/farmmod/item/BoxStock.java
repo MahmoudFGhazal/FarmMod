@@ -67,7 +67,7 @@ public class BoxStock extends Item {
                 Block aboveBlock = pContext.getLevel().getBlockState(position.above()).getBlock();
                 if(ItemUtils.checkHeight(position, aboveBlock)) {
                     Block block = ItemUtils.getRandomBlock(0);
-                    world.setBlock(position, block.defaultBlockState(), 3);
+                    world.setBlock(position.above(), block.defaultBlockState(), 3);
                     setCount(stack, currentCount - 1);
                     return InteractionResult.SUCCESS;
                 }else{
