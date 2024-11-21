@@ -18,7 +18,6 @@ import java.util.*;
 
 public class BoxStock extends Item {
 
-    // Constantes para definir o número máximo de stacks e o intervalo de atualização
     private static final int MAX_STACK = 100; // Quantidade máxima de stacks
     private static final int INTERVAL_STACK = 500; // Intervalo entre atualizações de stack (em ticks)
     private int tickCount = 0; // Contador de ticks
@@ -40,28 +39,20 @@ public class BoxStock extends Item {
         tag.putInt(COUNT_TAG, count); // Atualiza o valor de "count" na tag
     }
 
-    /**
-     * Atualiza o item a cada tick do mundo.
-     * Se o item não estiver no lado do cliente e o jogador for um ServerPlayer, o item pode aumentar sua quantidade
-     * se não atingir o limite máximo.
-     */
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level world, @NotNull Entity entity, int slot, boolean isSelected) {
         if (!world.isClientSide && entity instanceof ServerPlayer) { // Certifica-se de que é um servidor e um jogador
-            tickCount++; // Incrementa o contador de ticks
+            tickCount++;
             if (tickCount >= INTERVAL_STACK) { // Verifica se atingiu o intervalo de atualização
                 tickCount = 0; // Reseta o contador de ticks
                 int currentCount = getCount(stack); // Obtém a quantidade atual de stacks
-                if (currentCount < MAX_STACK) { // Verifica se a quantidade de stacks é menor que o máximo
+                if (currentCount < MAX_STACK) {
                     setCount(stack, currentCount + 1); // Aumenta a quantidade de stacks em 1
                 }
             }
         }
     }
 
-    /**
-     * Quando o item é usado em um bloco, ele tenta colocar um bloco aleatório se houver stacks disponíveis.
-     */
     @Override
     public @NotNull InteractionResult useOn(@NotNull UseOnContext pContext) {
         Level world = pContext.getLevel(); // Obtém o mundo onde a ação ocorre
@@ -80,17 +71,17 @@ public class BoxStock extends Item {
                     return InteractionResult.SUCCESS; // Ação bem-sucedida
                 } else {
                     if (player != null) {
-                        player.displayClientMessage(Component.literal("Não é possivel colocar bloco nesse lugar"), true); // Mensagem de erro para o jogador
+                        player.displayClientMessage(Component.literal("Não é possivel colocar bloco nesse lugar"), true);
                     }
                 }
             } else {
                 if (player != null) {
-                    player.displayClientMessage(Component.literal("Sem usos disponivel"), true); // Mensagem de erro se não houver stacks
+                    player.displayClientMessage(Component.literal("Sem usos disponivel"), true);
                 }
-                return InteractionResult.FAIL; // Falha na interação
+                return InteractionResult.FAIL;
             }
         }
-        return InteractionResult.PASS; // Retorna "pass" se a interação não foi bem-sucedida
+        return InteractionResult.PASS;
     }
 
     /**

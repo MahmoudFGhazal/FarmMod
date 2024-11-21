@@ -19,8 +19,8 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event){
-        // Adicionando novas trocas para a profissão de ARMORER (Ferreiro de armaduras)
 
+        // Adicionando novas trocas para a profissão de ARMORER (Ferreiro de armaduras)
         if(event.getType() == VillagerProfession.ARMORER){
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             trades.clear(); // Limpa as trocas padrão
@@ -51,7 +51,6 @@ public class ModEvents {
         }
 
         // Adicionando novas trocas para a profissão de TOOLSMITH (Ferreiro de ferramentas)
-
         if(event.getType() == VillagerProfession.TOOLSMITH){
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             trades.clear(); // Limpa as trocas padrão
@@ -82,7 +81,6 @@ public class ModEvents {
         }
 
         // Adicionando novas trocas para a profissão de WEAPONSMITH (Ferreiro de armas)
-
         if(event.getType() == VillagerProfession.WEAPONSMITH){
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             trades.clear(); // Limpa as trocas padrão
@@ -113,7 +111,6 @@ public class ModEvents {
         }
 
         // Adicionando novas trocas para a profissão de MASON (Pedreiro)
-
         if(event.getType() == VillagerProfession.MASON){
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             trades.clear(); // Limpa as trocas padrão
@@ -144,7 +141,6 @@ public class ModEvents {
         }
 
         // Adicionando novas trocas para a profissão de FISHERMAN (Pescador)
-
         if(event.getType() == VillagerProfession.FISHERMAN){
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             trades.clear(); // Limpa as trocas padrão

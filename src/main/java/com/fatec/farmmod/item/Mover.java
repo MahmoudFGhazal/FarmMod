@@ -2,7 +2,6 @@ package com.fatec.farmmod.item;
 
 import net.minecraft.ResourceLocationException;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,16 +14,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-// A classe 'Mover' representa um item que permite o jogador pegar e colocar blocos.
-// O item armazena o bloco que o jogador clica e o coloca em outra posição.
 public class Mover extends Item {
 
-    // Define o limite máximo de pilha do item como 1.
     public Mover(Properties pProperties){
+        // Define o limite máximo de pilha do item como 1.
         super(pProperties.stacksTo(1));
     }
 
@@ -33,7 +31,6 @@ public class Mover extends Item {
 
     @Override
     public @NotNull InteractionResult useOn(UseOnContext pContext){
-        // Verifica se o código não está sendo executado no lado cliente (servidor).
         if(!pContext.getLevel().isClientSide()) {
             BlockPos position = pContext.getClickedPos();  // Posição do bloco clicado.
             Player player = pContext.getPlayer();  // Jogador que usou o item.
@@ -117,7 +114,10 @@ public class Mover extends Item {
 
             try {
                 ResourceLocation blockKey = new ResourceLocation(blockId);  // Cria um ResourceLocation a partir do ID.
-                return BuiltInRegistries.BLOCK.get(blockKey);  // Recupera o bloco registrado.
+                Block block = ForgeRegistries.BLOCKS.getValue(blockKey); // Recupera o bloco usando ForgeRegistries.
+                if (block != null) {
+                    return block; // Retorna o bloco encontrado.
+                }
             } catch (ResourceLocationException e) {
                 // Log de erro caso o ID do bloco seja inválido.
                 System.err.println("Erro ao criar ResourceLocation: " + e.getMessage());

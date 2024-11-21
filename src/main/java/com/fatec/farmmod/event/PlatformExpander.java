@@ -20,11 +20,7 @@ public class PlatformExpander {
     // Altura fixa da plataforma no mundo
     private static final int PLATFORM_Y = -63;
 
-    /**
-     * Expande a plataforma para o jogador especificado, se ele tiver recursos suficientes.
-     * @param player O jogador que solicita a expansão.
-     * @param world O mundo do servidor onde ocorre a expansão.
-     */
+
     public static void expandPlatform(Player player, ServerLevel world) {
         // Define o centro da plataforma com base na posição do jogador (x e z do jogador, altura fixa)
         BlockPos platformCenter = new BlockPos(player.getBlockX(), PLATFORM_Y, player.getBlockZ());
@@ -50,22 +46,14 @@ public class PlatformExpander {
                 }
             }
 
-            // Envia uma mensagem de sucesso ao jogador
             player.sendSystemMessage(Component.literal("A plataforma foi expandida!").withStyle(ChatFormatting.GREEN));
         } else {
-            // Informa ao jogador que ele não possui esmeraldas suficientes
             player.sendSystemMessage(Component.literal("Você precisa de pelo menos " + EMERALDS_REQUIRED + " esmeraldas para expandir a plataforma.").withStyle(ChatFormatting.RED));
         }
     }
 
-    /**
-     * Conta a quantidade total de esmeraldas no inventário do jogador.
-     * @param player O jogador cujo inventário será verificado.
-     * @return O número total de esmeraldas encontradas.
-     */
     private static int countEmeralds(Player player) {
         int count = 0;
-        // Itera sobre os slots do inventário do jogador
         for (ItemStack stack : player.getInventory().items) {
             // Verifica se o item no slot é uma esmeralda
             if (stack.getItem() == Items.EMERALD) {
@@ -75,13 +63,8 @@ public class PlatformExpander {
         return count;
     }
 
-    /**
-     * Remove a quantidade necessária de esmeraldas do inventário do jogador.
-     * @param player O jogador cujo inventário será alterado.
-     */
     private static void removeEmeralds(Player player) {
         int amount = EMERALDS_REQUIRED; // Quantidade a ser removida
-        // Itera sobre os slots do inventário do jogador
         for (ItemStack stack : player.getInventory().items) {
             // Verifica se o item no slot é uma esmeralda
             if (stack.getItem() == Items.EMERALD) {

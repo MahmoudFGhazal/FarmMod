@@ -11,10 +11,10 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModCreativeModeTabs {
 
-    // Registro deferido para criar e registrar as guias de modo criativo (tabs) dentro do Minecraft
+    // Registra para criar e registrar as guias do modo criativo
     public static final DeferredRegister<CreativeModeTab> MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, FarmMod.MOD_ID);
 
-    // Registro de uma nova guia de modo criativo chamada "farmtab"
+    // Registro o nome da guia e os itens que estão nela
     public static final RegistryObject<CreativeModeTab> FARM_TAB = MODE_TABS.register("farmtab",
             () -> CreativeModeTab.builder()  // Criando a guia usando o construtor do CreativeModeTab
                     .icon(() -> new ItemStack(ModItems.FUSION.get()))  // Definindo o ícone da guia como o item 'Fusion'
@@ -25,7 +25,7 @@ public class ModCreativeModeTabs {
                     })
                     .build());  // Finalizando a criação da guia
 
-    // Método de registro da guia no evento de registro do Forge
+    // Registrar no jogo
     public static void register(IEventBus eventBus) {
         MODE_TABS.register(eventBus);  // Registrando o DeferredRegister para as CreativeModeTabs no evento
     }

@@ -107,7 +107,7 @@ public class Fusion extends Item {
         return InteractionResult.SUCCESS;  // Retorna sucesso para a interação
     }
 
-    // Método recursivo para verificar os vizinhos de um bloco e adicionar os correspondentes à lista
+    // Metodo para verificar os vizinhos de um bloco e adicionar os correspondentes à lista
     private void checkNeighbors(Block startblock, BlockPos position, Level level) {
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
@@ -129,7 +129,7 @@ public class Fusion extends Item {
         }
     }
 
-    // Método que deleta os blocos correspondentes
+    // Metodo que deleta os blocos correspondentes
     private void deleteBlocks(UseOnContext pContext){
         for (BlockPos posToDelete : matchingBlocks) {
             pContext.getLevel().setBlock(posToDelete, Blocks.AIR.defaultBlockState(), 2);  // Deleta o bloco
