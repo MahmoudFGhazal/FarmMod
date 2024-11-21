@@ -77,9 +77,6 @@ public class FarmMod {
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity();
-        if(player instanceof ServerPlayer) {
-            ((ServerPlayer) player).setGameMode(GameType.ADVENTURE);
-        }
         if (!player.getInventory().contains(new ItemStack(ModItems.FUSION.get()))) {
             player.getInventory().add(new ItemStack(ModItems.FUSION.get()));
             player.getInventory().add(new ItemStack(ModItems.MOVER.get()));
