@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 
 public class PlatformExpander {
 
-    public static final int EMERALDS_REQUIRED = 10; // Quantidade de esmeraldas para expandir
+    public static int EMERALDS_REQUIRED = 10; // Quantidade de esmeraldas para expandir
     public static final int EXPANSION_SIZE = 2; // Tamanho de expansão em cada direção
 
     // Coordenadas fixas da plataforma
@@ -26,7 +26,7 @@ public class PlatformExpander {
 
         if (emeraldCount >= EMERALDS_REQUIRED) {
             // Remove esmeraldas do inventário
-            removeEmeralds(player, EMERALDS_REQUIRED);
+            removeEmeralds(player);
 
             // Expande a plataforma
             for (int x = -EXPANSION_SIZE; x <= EXPANSION_SIZE; x++) {
@@ -56,7 +56,8 @@ public class PlatformExpander {
         return count;
     }
 
-    private static void removeEmeralds(Player player, int amount) {
+    private static void removeEmeralds(Player player) {
+        int amount = EMERALDS_REQUIRED;
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() == Items.EMERALD) {
                 int removed = Math.min(stack.getCount(), amount);

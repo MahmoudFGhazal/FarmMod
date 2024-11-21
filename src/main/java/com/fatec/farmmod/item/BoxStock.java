@@ -57,17 +57,17 @@ public class BoxStock extends Item {
     @Override
     public @NotNull InteractionResult useOn(@NotNull UseOnContext pContext){
         Level world = pContext.getLevel();
-        BlockPos position = pContext.getClickedPos();
+        BlockPos position = pContext.getClickedPos().relative(pContext.getClickedFace());;
         ItemStack stack = pContext.getItemInHand();
         Player player = pContext.getPlayer();
 
         if(!world.isClientSide) {
             int currentCount = getCount(stack);
             if (currentCount > 0) { //verifica se o item tem stacks para usar
-                Block aboveBlock = pContext.getLevel().getBlockState(position.above()).getBlock();
+                Block aboveBlock = pContext.getLevel().getBlockState(position).getBlock();
                 if(ItemUtils.checkHeight(position, aboveBlock)) {
                     Block block = ItemUtils.getRandomBlock(0);
-                    world.setBlock(position.above(), block.defaultBlockState(), 3);
+                    world.setBlock(position, block.defaultBlockState(), 3);
                     setCount(stack, currentCount - 1);
                     return InteractionResult.SUCCESS;
                 }else{

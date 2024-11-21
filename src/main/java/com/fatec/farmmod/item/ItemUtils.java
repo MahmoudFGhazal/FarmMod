@@ -83,7 +83,7 @@ public class ItemUtils {
     }
 
     public static boolean checkHeight(BlockPos position, Block aboveBlock){
-        return position.above().getY() == -62 && aboveBlock == Blocks.AIR;
+        return position.getY() == -62 && aboveBlock == Blocks.AIR;
     }
 
 
